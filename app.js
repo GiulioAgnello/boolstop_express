@@ -1,7 +1,7 @@
 const express = require("express");
 const connection = require("./data/db");
 const app = express();
-const port = 3000;
+const port = process.env.DB_PORT;
 
 // router
 app.get("/", (req, res) => {
