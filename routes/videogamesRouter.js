@@ -6,5 +6,6 @@ const router = express.Router();
 
 // router
 router.get(`/`, videogamesControllers.index);
+router.get(`/:id`, videogamesControllers.show);
 
 module.exports = router;

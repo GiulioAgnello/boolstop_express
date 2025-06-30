@@ -1,5 +1,5 @@
 const connection = require("../data/db");
-const { queryGamesList } = require("../query/queryData");
+const { queryGamesList, queryGame } = require("../query/queryData");
 
 // controller
 const index = (req, res) => {
@@ -11,6 +11,21 @@ const index = (req, res) => {
   });
 };
 
+const show = (req, res) => {
+  // date to take a query for videogames
+  const { id } = req.params;
+  const sql = queryGame;
+  // query for movie
+  connection.query(sql, [id], (err, gameResults) => {
+    if (err) return res.status(500).json({ error: `database query failed` });
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: `game not found` });
+    const game = gameResults[0];
+    res.json(game);
+  });
+};
+
 module.exports = {
   index,
+  show,
 };
