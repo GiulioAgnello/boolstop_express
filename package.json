@@ -1,0 +1,15 @@
+{
+  "name": "boolstop_express",
+  "version": "1.0.0",
+  "description": "backend web store game",
+  "license": "ISC",
+  "author": "class6",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
