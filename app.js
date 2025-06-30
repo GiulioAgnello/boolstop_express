@@ -1,10 +1,11 @@
 const express = require("express");
-
+const videogamesRouter = require("./routes/videogamesRouter");
 require("dotenv").config();
 const app = express();
 const port = 3000;
 
-// router
+// access all routers
+app.use("/videogames", videogamesRouter);
 
 // listen
 app.listen(port, () => {
