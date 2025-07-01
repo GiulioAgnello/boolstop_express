@@ -1,5 +1,9 @@
 const connection = require("../data/db");
-const { queryGamesList, queryGame } = require("../query/queryData");
+const {
+  queryGamesList,
+  queryGame,
+  queryOrderByPrice,
+} = require("../query/queryData");
 
 // controller
 const index = (req, res) => {
@@ -25,7 +29,22 @@ const show = (req, res) => {
   });
 };
 
+const indexByReleaseDate = (req, res) => {
+  const { sort = "release_date" } = req.params;
+  const order = "desc";
+
+  const sql = `SELECT * 
+FROM videogames_store.videogames
+order by ${mysql.escapeId(sort)} ${order}`;
+
+  connection.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: "Database query failed" });
+    res.json({ results });
+  });
+};
+
 module.exports = {
   index,
   show,
+  indexByReleaseDate,
 };
