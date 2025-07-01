@@ -9,6 +9,7 @@ const {
   gamesForPs5,
   gamesForNintendo,
   pcGamesListQuery,
+  gamePsQuery,
 } = require("../query/queryData");
 
 // controller
@@ -42,11 +43,7 @@ const show = (req, res) => {
   const sql = queryGame;
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
-    if (err) {
-      console.log("errore:", err);
-
-      return res.status(500).json({ error: "database query failed" });
-    }
+    if (err) return res.status(500).json({ error: "database query failed" });
     if (gameResults.length === 0)
       return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
@@ -125,6 +122,22 @@ const indexPs = (req, res) => {
       return res.status(500).json({ error: "Database query failed" });
     }
     res.json({ results });
+  });
+};
+
+const showPs = (req, res) => {
+  const { id } = req.params;
+
+  const sql = gamePsQuery;
+
+  connection.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database query failed" });
+    if (results.length === 0)
+      return res.status(404).json({ error: "Game not found" });
+
+    const game = results[0];
+
+    res.json(game);
   });
 };
 
@@ -211,4 +224,5 @@ module.exports = {
   indexPs,
   indexNintendo,
   indexPc,
+  showPs,
 };
