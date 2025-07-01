@@ -12,6 +12,7 @@ const urlHost = process.env.APP_HOST;
 const corsConfig = {
   origin: "http://localhost",
 };
+const ordersRouter = require('./routes/ordersRouter');
 
 // cors middelware
 app.use(cors(corsConfig));
@@ -21,6 +22,8 @@ app.use(express.json());
 
 // access all routers
 app.use("/videogames", videogamesRouter);
+app.use('/orders', ordersRouter);
+
 
 // error middleware
 app.use(handlerError);
