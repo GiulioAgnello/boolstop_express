@@ -3,10 +3,11 @@ const connection = require("../data/db");
 const {
   videogamesListQuery,
   queryGame,
+  queryGamePC,
+  queryGameXbox,
   gamesForXbox,
   gamesForPs5,
   gamesForNintendo,
-  gamesForPlatformList,
   pcGamesListQuery,
 } = require("../query/queryData");
 
@@ -78,6 +79,24 @@ const indexBox = (req, res) => {
       return res.status(500).json({ error: "Database query failed" });
     }
     res.json({ results });
+  });
+};
+
+const showXbox = (req, res) => {
+  // date to take a query for videogames
+  const { id } = req.params;
+  const sql = queryGameXbox;
+  // query for movie
+  connection.query(sql, [id], (err, gameResults) => {
+    if (err) {
+      console.log("errore:", err);
+
+      return res.status(500).json({ error: "database query failed" });
+    }
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: "game not found" });
+    const game = gameResults[0];
+    res.json(game);
   });
 };
 
@@ -165,10 +184,29 @@ const indexPc = (req, res) => {
     res.json({ results });
   });
 };
+const showPc = (req, res) => {
+  // date to take a query for videogames
+  const { id } = req.params;
+  const sql = queryGamePC;
+  // query for movie
+  connection.query(sql, [id], (err, gameResults) => {
+    if (err) {
+      console.log("errore:", err);
+
+      return res.status(500).json({ error: "database query failed" });
+    }
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: "game not found" });
+    const game = gameResults[0];
+    res.json(game);
+  });
+};
 
 module.exports = {
   index,
   show,
+  showPc,
+  showXbox,
   indexBox,
   indexPs,
   indexNintendo,
