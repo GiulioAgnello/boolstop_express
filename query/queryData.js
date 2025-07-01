@@ -51,10 +51,14 @@ WHERE platform = "xbox" `;
 
 const gamesForPs5 = `SELECT * FROM videogames_store.videogames
 WHERE platform = "ps5" `;
+
+const gamesForNintendo = `SELECT * FROM videogames_store.videogames
+WHERE platform = "Nintendo" `;
 module.exports = {
   queryGamesList,
   queryGame,
   videogamesListQuery,
   gamesForXbox,
   gamesForPs5,
+  gamesForNintendo,
 };

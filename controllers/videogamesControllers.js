@@ -5,6 +5,7 @@ const {
   queryGame,
   gamesForXbox,
   gamesForPs5,
+  gamesForNintendo,
 } = require("../query/queryData");
 
 // controller
@@ -105,9 +106,39 @@ const indexPs = (req, res) => {
     res.json({ results });
   });
 };
+
+// controller Nintendo
+const indexNintendo = (req, res) => {
+  const { sort, minPrice } = req.query;
+  const order = "desc";
+
+  let dataParams = [];
+
+  let sql = gamesForNintendo;
+
+  if (minPrice) {
+    sql += ` AND original_price >= ? `;
+    dataParams.push(minPrice);
+  }
+
+  if (sort) {
+    sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  }
+
+  // eseguiamo la query!
+  connection.query(sql, dataParams, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+    res.json({ results });
+  });
+};
+
 module.exports = {
   index,
   show,
   indexBox,
   indexPs,
+  indexNintendo,
 };
