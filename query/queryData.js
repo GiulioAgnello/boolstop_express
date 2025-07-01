@@ -43,4 +43,8 @@ INNER JOIN genres
   WHERE videogames.id = ?
 GROUP BY videogames.id;`;
 
-module.exports = { queryGamesList, queryGame };
+const queryOrderByPrice = `SELECT * 
+FROM videogames_store.videogames
+order by release_date desc;`;
+
+module.exports = { queryGamesList, queryGame, queryOrderByPrice };
