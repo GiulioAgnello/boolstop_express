@@ -9,7 +9,7 @@ router.get(`/`, videogamesControllers.index);
 router.get(`/:id`, videogamesControllers.show);
 router.get(`/platform/xbox`, videogamesControllers.indexBox);
 // router.get(`/playstation`, platformController.IndexForPlatform);
-// router.get(`/pc`, platformController.IndexForPlatform);
+router.get(`/platfrom/pc`, videogamesControllers.indexPc);
 // router.get(`/nintendo`, platformController.IndexForPlatform);
 
 module.exports = router;

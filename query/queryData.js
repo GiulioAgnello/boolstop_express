@@ -49,9 +49,14 @@ FROM videogames_store.videogames`;
 const gamesForPlatformList = `SELECT * FROM videogames_store.videogames
 WHERE platform = "xbox" `;
 
+// query per la visualizzazione di tutti i videogiochi pc
+const pcGamesListQuery = `SELECT * FROM videogames_store.videogames
+WHERE platform = "pc"`;
+
 module.exports = {
   queryGamesList,
   queryGame,
   videogamesListQuery,
   gamesForPlatformList,
+  pcGamesListQuery,
 };
