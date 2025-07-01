@@ -4,16 +4,16 @@ const { videogamesListQuery, queryGame } = require("../query/queryData");
 
 // controller
 const index = (req, res) => {
-  const { sort, price } = req.query;
+  const { sort, minPrice } = req.query;
   const order = "desc";
 
   let dataParams = [];
 
   let sql = videogamesListQuery;
 
-  if (price) {
+  if (minPrice) {
     sql += ` WHERE original_price > ? `;
-    dataParams.push(price);
+    dataParams.push(minPrice);
   }
 
   if (sort) {
