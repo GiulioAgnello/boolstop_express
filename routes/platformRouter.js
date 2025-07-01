@@ -1,7 +1,8 @@
 const express = require("express");
-const { IndexForPlatform } = require("../controllers/platformController");
+const platfontroller = require("../controllers/platformController");
+
 const router = express.Router();
 
-router.post("/videogames/:platform", IndexForPlatform);
+router.get("/", platfontroller.IndexForPlatform);
 
 module.exports = router;

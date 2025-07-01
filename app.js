@@ -5,7 +5,7 @@ const cors = require("cors");
 // require
 const videogamesRouter = require("./routes/videogamesRouter");
 const ordersRouter = require("./routes/ordersRouter");
-const platfromRouter = require("./routes/platformRouter");
+
 const handlerError = require("./middleware/hendolerror");
 const errorFound = require("./middleware/errorfound");
 const app = express();
@@ -22,7 +22,7 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // access all routers
-app.use("/platform", platfromRouter);
+
 app.use("/videogames", videogamesRouter);
 app.use("/orders", ordersRouter);
 
