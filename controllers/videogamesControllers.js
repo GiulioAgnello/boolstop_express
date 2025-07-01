@@ -3,7 +3,9 @@ const connection = require("../data/db");
 const {
   videogamesListQuery,
   queryGame,
-  gamesForPlatformList,
+  gamesForXbox,
+  gamesForPs5,
+  gamesForNintendo,
 } = require("../query/queryData");
 
 // controller
@@ -56,7 +58,63 @@ const indexBox = (req, res) => {
 
   let dataParams = [];
 
-  let sql = gamesForPlatformList;
+  let sql = gamesForXbox;
+
+  if (minPrice) {
+    sql += ` AND original_price >= ? `;
+    dataParams.push(minPrice);
+  }
+
+  if (sort) {
+    sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  }
+
+  // eseguiamo la query!
+  connection.query(sql, dataParams, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+    res.json({ results });
+  });
+};
+
+// controller Playstation
+const indexPs = (req, res) => {
+  const { sort, minPrice } = req.query;
+  const order = "desc";
+
+  let dataParams = [];
+
+  let sql = gamesForPs5;
+
+  if (minPrice) {
+    sql += ` AND original_price >= ? `;
+    dataParams.push(minPrice);
+  }
+
+  if (sort) {
+    sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  }
+
+  // eseguiamo la query!
+  connection.query(sql, dataParams, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+    res.json({ results });
+  });
+};
+
+// controller Nintendo
+const indexNintendo = (req, res) => {
+  const { sort, minPrice } = req.query;
+  const order = "desc";
+
+  let dataParams = [];
+
+  let sql = gamesForNintendo;
 
   if (minPrice) {
     sql += ` AND original_price >= ? `;
@@ -81,4 +139,6 @@ module.exports = {
   index,
   show,
   indexBox,
+  indexPs,
+  indexNintendo,
 };
