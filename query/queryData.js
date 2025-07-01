@@ -65,6 +65,5 @@ module.exports = {
   gamesForXbox,
   gamesForPs5,
   gamesForNintendo,
-  gamesForPlatformList,
   pcGamesListQuery,
 };
