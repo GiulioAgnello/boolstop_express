@@ -12,7 +12,7 @@ const index = (req, res) => {
   let sql = videogamesListQuery;
 
   if (minPrice) {
-    sql += ` WHERE original_price > ? `;
+    sql += ` WHERE original_price >= ? `;
     dataParams.push(minPrice);
   }
 
