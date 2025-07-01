@@ -10,6 +10,7 @@ router.get(`/:id`, videogamesControllers.show);
 router.get(`/platform/pc`, videogamesControllers.indexPc);
 router.get(`/platform/xbox`, videogamesControllers.indexBox);
 router.get(`/platform/playstation`, videogamesControllers.indexPs);
+router.get(`/platform/playstation/:id`, videogamesControllers.showPs);
 router.get(`/platform/nintendo`, videogamesControllers.indexNintendo);
 
 module.exports = router;
