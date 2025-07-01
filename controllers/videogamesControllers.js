@@ -1,17 +1,29 @@
+const mysql = require("mysql2");
 const connection = require("../data/db");
-const {
-  queryGamesList,
-  queryGame,
-  queryOrderByPrice,
-} = require("../query/queryData");
+const { videogamesListQuery, queryGame } = require("../query/queryData");
 
 // controller
 const index = (req, res) => {
-  const sql = queryGamesList;
+  const { sort, price } = req.query;
+  const order = "desc";
+
+  let dataParams = [];
+
+  let sql = videogamesListQuery;
+
+  if (price) {
+    sql += ` WHERE original_price > ? `;
+    dataParams.push(price);
+  }
+
+  if (sort) {
+    sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  }
+
   // eseguiamo la query!
-  connection.query(sql, (err, results) => {
+  connection.query(sql, dataParams, (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    res.json(results);
+    res.json({ results });
   });
 };
 
@@ -29,22 +41,7 @@ const show = (req, res) => {
   });
 };
 
-const indexByReleaseDate = (req, res) => {
-  const { sort = "release_date" } = req.params;
-  const order = "desc";
-
-  const sql = `SELECT * 
-FROM videogames_store.videogames
-order by ${mysql.escapeId(sort)} ${order}`;
-
-  connection.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ error: "Database query failed" });
-    res.json({ results });
-  });
-};
-
 module.exports = {
   index,
   show,
-  indexByReleaseDate,
 };
