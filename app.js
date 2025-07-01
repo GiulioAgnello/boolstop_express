@@ -14,10 +14,6 @@ const urlHost = process.env.APP_HOST;
 const corsConfig = {
   origin: "http://localhost",
 };
-<<<<<<< HEAD
-=======
-const ordersRouter = require("./routes/ordersRouter");
->>>>>>> new-show-method
 
 // cors middelware
 app.use(cors(corsConfig));
