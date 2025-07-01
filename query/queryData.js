@@ -46,42 +46,52 @@ GROUP BY videogames.id;`;
 const videogamesListQuery = `SELECT * 
 FROM videogames_store.videogames`;
 
+// QUERY INDEX
+
+// xbox
 const gamesForXbox = `SELECT * FROM videogames_store.videogames
 WHERE platform = "xbox" `;
 
-// query playstation
+//  playstation
 const gamesForPs5 = `SELECT * FROM videogames_store.videogames
 WHERE platform = "ps5" `;
 
-const gamePsQuery = `SELECT * FROM videogames_store.videogames
-WHERE platform = "ps5" AND id = ? `;
-
-const queryGamePC = `SELECT * FROM videogames_store.videogames
-WHERE platform = "pc" AND id = ? `;
-
-const queryGameXbox = `SELECT * FROM videogames_store.videogames
-WHERE platform = "xbox" AND id = ? `;
-
+//  nintendo
 const gamesForNintendo = `SELECT * FROM videogames_store.videogames
 WHERE platform = "Nintendo"`;
 
+// pc
+const gamesForPc = `SELECT * FROM videogames_store.videogames
+WHERE platform = "pc"`;
+
+// QUERY SHOW
+
+//  playstation
+const gamePsQuery = `SELECT * FROM videogames_store.videogames
+WHERE platform = "ps5" AND id = ? `;
+
+// pc
+const gamePcQuery = `SELECT * FROM videogames_store.videogames
+WHERE platform = "pc" AND id = ? `;
+
+// xbox
+const gameXboxQuery = `SELECT * FROM videogames_store.videogames
+WHERE platform = "xbox" AND id = ? `;
+
+//  nintendo
 const gameNintendoQuery = `SELECT * FROM videogames_store.videogames
 WHERE platform = "nintendo" AND id = ? `;
-
-// query per la visualizzazione di tutti i videogiochi pc
-const pcGamesListQuery = `SELECT * FROM videogames_store.videogames
-WHERE platform = "pc"`;
 
 module.exports = {
   queryGamesList,
   queryGame,
-  queryGamePC,
-  queryGameXbox,
+  gamePcQuery,
+  gameXboxQuery,
   videogamesListQuery,
   gamesForXbox,
   gamesForPs5,
   gamesForNintendo,
-  pcGamesListQuery,
+  gamesForPc,
   gamePsQuery,
   gameNintendoQuery,
 };

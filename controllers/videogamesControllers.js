@@ -3,12 +3,12 @@ const connection = require("../data/db");
 const {
   videogamesListQuery,
   queryGame,
-  queryGamePC,
-  queryGameXbox,
+  gamePcQuery,
+  gameXboxQuery,
   gamesForXbox,
   gamesForPs5,
   gamesForNintendo,
-  pcGamesListQuery,
+  gamesForPc,
   gamePsQuery,
   gameNintendoQuery,
 } = require("../query/queryData");
@@ -83,7 +83,7 @@ const indexBox = (req, res) => {
 const showXbox = (req, res) => {
   // date to take a query for videogames
   const { id } = req.params;
-  const sql = queryGameXbox;
+  const sql = gameXboxQuery;
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) {
@@ -194,7 +194,7 @@ const indexPc = (req, res) => {
 
   let dataParams = [];
 
-  let sql = pcGamesListQuery;
+  let sql = gamesForPc;
 
   if (minPrice) {
     sql += ` AND original_price >= ? `;
@@ -214,10 +214,11 @@ const indexPc = (req, res) => {
     res.json({ results });
   });
 };
+
 const showPc = (req, res) => {
   // date to take a query for videogames
   const { id } = req.params;
-  const sql = queryGamePC;
+  const sql = gamePcQuery;
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) {
