@@ -4,14 +4,11 @@ const { gamesForPlatformList } = require("../query/queryData");
 // Controller
 
 const IndexForPlatform = (req, res) => {
-  const { platform } = req.query;
-  let sql = gamesForPlatformList;
-
-  sql += `  WHERE platform = ${platform}
-  GROUP BY videogames.id;`;
+  const platform = req.params.platform;
+  const sql = gamesForPlatformList;
 
   // eseguiamo la query!
-  connection.query(sql, (err, results) => {
+  connection.query(sql, [platform], (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
     res.json({ results });
   });
