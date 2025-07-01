@@ -44,7 +44,12 @@ INNER JOIN genres
 GROUP BY videogames.id;`;
 
 const videogamesListQuery = `SELECT * 
-FROM videogames_store.videogames`;
+FROM videogames_store.videogames
+`;
+
+const videogamesRelated = `SELECT * 
+FROM videogames_store.videogames
+WHERE genres = ? `;
 
 // QUERY INDEX
 
@@ -88,6 +93,7 @@ module.exports = {
   gamePcQuery,
   gameXboxQuery,
   videogamesListQuery,
+  videogamesRelated,
   gamesForXbox,
   gamesForPs5,
   gamesForNintendo,
