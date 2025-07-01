@@ -54,6 +54,10 @@ WHERE platform = "ps5" `;
 
 const gamesForNintendo = `SELECT * FROM videogames_store.videogames
 WHERE platform = "Nintendo" `;
+// query per la visualizzazione di tutti i videogiochi pc
+const pcGamesListQuery = `SELECT * FROM videogames_store.videogames
+WHERE platform = "pc"`;
+
 module.exports = {
   queryGamesList,
   queryGame,
@@ -61,4 +65,6 @@ module.exports = {
   gamesForXbox,
   gamesForPs5,
   gamesForNintendo,
+  gamesForPlatformList,
+  pcGamesListQuery,
 };
