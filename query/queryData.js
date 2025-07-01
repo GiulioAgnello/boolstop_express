@@ -46,12 +46,15 @@ GROUP BY videogames.id;`;
 const videogamesListQuery = `SELECT * 
 FROM videogames_store.videogames`;
 
-const gamesForPlatformList = `SELECT * FROM videogames_store.videogames
+const gamesForXbox = `SELECT * FROM videogames_store.videogames
 WHERE platform = "xbox" `;
 
+const gamesForPs5 = `SELECT * FROM videogames_store.videogames
+WHERE platform = "ps5" `;
 module.exports = {
   queryGamesList,
   queryGame,
   videogamesListQuery,
-  gamesForPlatformList,
+  gamesForXbox,
+  gamesForPs5,
 };
