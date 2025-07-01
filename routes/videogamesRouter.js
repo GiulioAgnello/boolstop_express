@@ -8,7 +8,9 @@ const router = express.Router();
 router.get(`/`, videogamesControllers.index);
 router.get(`/:id`, videogamesControllers.show);
 router.get(`/platform/pc`, videogamesControllers.indexPc);
+router.get(`/platform/pc/:id`, videogamesControllers.showPc);
 router.get(`/platform/xbox`, videogamesControllers.indexBox);
+router.get(`/platform/xbox/:id`, videogamesControllers.showXbox);
 router.get(`/platform/playstation`, videogamesControllers.indexPs);
 router.get(`/platform/nintendo`, videogamesControllers.indexNintendo);
 
