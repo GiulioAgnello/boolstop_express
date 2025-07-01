@@ -1,6 +1,10 @@
 const mysql = require("mysql2");
 const connection = require("../data/db");
-const { videogamesListQuery, queryGame } = require("../query/queryData");
+const {
+  videogamesListQuery,
+  queryGame,
+  gamesForPlatformList,
+} = require("../query/queryData");
 
 // controller
 const index = (req, res) => {
@@ -45,7 +49,36 @@ const show = (req, res) => {
   });
 };
 
+// controller xbox
+const indexBox = (req, res) => {
+  const { sort, minPrice } = req.query;
+  const order = "desc";
+
+  let dataParams = [];
+
+  let sql = gamesForPlatformList;
+
+  if (minPrice) {
+    sql += ` AND original_price >= ? `;
+    dataParams.push(minPrice);
+  }
+
+  if (sort) {
+    sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  }
+
+  // eseguiamo la query!
+  connection.query(sql, dataParams, (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: "Database query failed" });
+    }
+    res.json({ results });
+  });
+};
+
 module.exports = {
   index,
   show,
+  indexBox,
 };
