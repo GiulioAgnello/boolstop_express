@@ -14,5 +14,6 @@ router.get(`/platform/xbox/:id`, videogamesControllers.showXbox);
 router.get(`/platform/playstation`, videogamesControllers.indexPs);
 router.get(`/platform/playstation/:id`, videogamesControllers.showPs);
 router.get(`/platform/nintendo`, videogamesControllers.indexNintendo);
+router.get(`/platform/nintendo/:id`, videogamesControllers.showNintendo);
 
 module.exports = router;

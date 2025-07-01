@@ -10,6 +10,7 @@ const {
   gamesForNintendo,
   pcGamesListQuery,
   gamePsQuery,
+  gameNintendoQuery,
 } = require("../query/queryData");
 
 // controller
@@ -169,6 +170,22 @@ const indexNintendo = (req, res) => {
   });
 };
 
+const showNintendo = (req, res) => {
+  const { id } = req.params;
+
+  const sql = gameNintendoQuery;
+
+  connection.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database query failed" });
+    if (results.length === 0)
+      return res.status(404).json({ error: "Game not found" });
+
+    const game = results[0];
+
+    res.json(game);
+  });
+};
+
 // controller pc
 
 const indexPc = (req, res) => {
@@ -225,4 +242,5 @@ module.exports = {
   indexNintendo,
   indexPc,
   showPs,
+  showNintendo,
 };
