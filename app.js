@@ -4,6 +4,8 @@ require("dotenv").config();
 const cors = require("cors");
 // require
 const videogamesRouter = require("./routes/videogamesRouter");
+const ordersRouter = require("./routes/ordersRouter");
+const platfromRouter = require("./routes/platformRouter");
 const handlerError = require("./middleware/hendolerror");
 const errorFound = require("./middleware/errorfound");
 const app = express();
@@ -12,7 +14,6 @@ const urlHost = process.env.APP_HOST;
 const corsConfig = {
   origin: "http://localhost",
 };
-const ordersRouter = require('./routes/ordersRouter');
 
 // cors middelware
 app.use(cors(corsConfig));
@@ -21,9 +22,9 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // access all routers
+app.use("/platform", platfromRouter);
 app.use("/videogames", videogamesRouter);
-app.use('/orders', ordersRouter);
-
+app.use("/orders", ordersRouter);
 
 // error middleware
 app.use(handlerError);
