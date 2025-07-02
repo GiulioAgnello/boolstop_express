@@ -264,7 +264,15 @@ const showPc = (req, res) => {
     if (gameResults.length === 0)
       return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
-    res.json(game);
+
+    const sqlGenres = videogameGenresQuery;
+
+    connection.query(sqlGenres, [id], (err, results) => {
+      if (err) return res.status(500).json({ error: "Database query failed" });
+      game.genres = results.map((genre) => genre.name);
+
+      res.json(game);
+    });
   });
 };
 
