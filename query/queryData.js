@@ -46,6 +46,15 @@ GROUP BY videogames.id;`;
 const videogamesListQuery = `SELECT * 
 FROM videogames_store.videogames`;
 
+const videogameGenresQuery = `SELECT 
+genres.name
+FROM videogames_store.genre_videogame
+INNER JOIN videogames
+on videogames.id = genre_videogame.videogame_id
+inner join genres
+on genres.id = genre_videogame.genre_id
+where videogames.id = ?`;
+
 // QUERY INDEX
 
 // xbox
@@ -94,4 +103,5 @@ module.exports = {
   gamesForPc,
   gamePsQuery,
   gameNintendoQuery,
+  videogameGenresQuery,
 };

@@ -11,6 +11,7 @@ const {
   gamesForPc,
   gamePsQuery,
   gameNintendoQuery,
+  videogameGenresQuery,
 } = require("../query/queryData");
 
 // controller
@@ -86,15 +87,18 @@ const showXbox = (req, res) => {
   const sql = gameXboxQuery;
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
-    if (err) {
-      console.log("errore:", err);
-
-      return res.status(500).json({ error: "database query failed" });
-    }
+    if (err) return res.status(500).json({ error: "Database query failed" });
     if (gameResults.length === 0)
       return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
-    res.json(game);
+
+    const sqlGenres = videogameGenresQuery;
+
+    connection.query(sqlGenres, [id], (err, resutlts) => {
+      if (err) return res.status(500).json({ error: "Database query failed" });
+      game.genres = resutlts;
+      res.json(game);
+    });
   });
 };
 
