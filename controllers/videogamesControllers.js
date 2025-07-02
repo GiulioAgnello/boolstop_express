@@ -210,7 +210,14 @@ const showNintendo = (req, res) => {
 
     const game = results[0];
 
-    res.json(game);
+    const sqlGenres = videogameGenresQuery;
+
+    connection.query(sqlGenres, [id], (err, results) => {
+      if (err) return res.status(500).json({ error: "Database query failed" });
+      game.genres = results.map((genre) => genre.name);
+
+      res.json(game);
+    });
   });
 };
 
