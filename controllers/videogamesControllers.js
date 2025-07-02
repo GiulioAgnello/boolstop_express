@@ -2,6 +2,7 @@ const mysql = require("mysql2");
 const connection = require("../data/db");
 const {
   videogamesListQuery,
+  videogamesRelated,
   queryGame,
   gamePcQuery,
   gameXboxQuery,
@@ -12,6 +13,22 @@ const {
   gamePsQuery,
   gameNintendoQuery,
 } = require("../query/queryData");
+
+// Filter genre
+const indexRelated = (req, res) => {
+  const { genres } = req.params;
+
+  if (!genres) {
+    return res.status(400).json({ error: "Missing 'genres' query parameter" });
+  }
+
+  const sql = videogamesRelated;
+
+  connection.query(sql, [genres], (err, results) => {
+    if (err) return res.status(500).json({ error: "Database query failed" });
+    res.json({ results });
+  });
+};
 
 // controller
 const index = (req, res) => {
@@ -236,6 +253,7 @@ const showPc = (req, res) => {
 module.exports = {
   index,
   show,
+  indexRelated,
   showPc,
   showXbox,
   indexBox,
