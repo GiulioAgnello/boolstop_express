@@ -5,6 +5,7 @@ const cors = require("cors");
 // require
 const videogamesRouter = require("./routes/videogamesRouter");
 const ordersRouter = require("./routes/ordersRouter");
+const genresRouter = require("./routes/genresRouter");
 
 const handlerError = require("./middleware/hendolerror");
 const errorFound = require("./middleware/errorfound");
@@ -25,6 +26,7 @@ app.use(express.json());
 
 app.use("/videogames", videogamesRouter);
 app.use("/orders", ordersRouter);
+app.use("/", genresRouter);
 
 // error middleware
 app.use(handlerError);
