@@ -9,6 +9,7 @@ const {
 
   videogameGenresQuery,
   videogameQuery,
+  allGenresQuery,
 } = require("../query/queryData");
 
 // Filter genre correlati
@@ -27,16 +28,33 @@ const indexRelated = (req, res) => {
   });
 };
 
-// controller
+const getAllGenres = (req, res) => {
+  const sql = "SELECT name FROM genres ORDER BY name";
+  connection.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Errore nel database" });
+    }
+    const genres = results.map((g) => g.name);
+    res.json({ genres });
+  });
+};
+
 const index = (req, res) => {
-  const { sort, minPrice } = req.query;
+  const { sort, minPrice, genre, platform, name } = req.query;
   const order = "desc";
-  const { name } = req.query;
 
   let dataParams = [];
   let conditions = [];
+  let joins = `
+    LEFT JOIN genre_videogame ON genre_videogame.videogame_id = videogames.id
+    LEFT JOIN genres ON genres.id = genre_videogame.genre_id
+  `;
 
-  let sql = videogamesListQuery;
+  let sql = `
+    SELECT videogames.*, GROUP_CONCAT(genres.name) AS genres
+    FROM videogames_store.videogames
+    ${joins}
+  `;
 
   if (minPrice) {
     conditions.push("original_price >= ?");
@@ -48,17 +66,35 @@ const index = (req, res) => {
     dataParams.push(`%${name}%`);
   }
 
+  if (genre) {
+    conditions.push("genres.name = ?");
+    dataParams.push(genre);
+  }
+
+  if (platform) {
+    conditions.push("platform = ?");
+    dataParams.push(platform);
+  }
+
   if (conditions.length > 0) {
     sql += " WHERE " + conditions.join(" AND ");
   }
 
+  sql += " GROUP BY videogames.id";
+
   if (sort) {
     sql += ` ORDER BY ${mysql.escapeId(sort)} ${order}`;
   }
-  // eseguiamo la query!
+
   connection.query(sql, dataParams, (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    res.json({ results });
+
+    const processedResults = results.map((game) => ({
+      ...game,
+      genres: game.genres ? game.genres.split(",") : [],
+    }));
+
+    res.json({ results: processedResults });
   });
 };
 
@@ -69,8 +105,7 @@ const show = (req, res) => {
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "database query failed" });
-    if (gameResults.length === 0)
-      return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -120,8 +155,7 @@ const showPlatform = (req, res) => {
   // query for movie
   connection.query(sql, [platform, id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (gameResults.length === 0)
-      return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -141,4 +175,5 @@ module.exports = {
 
   showPlatform,
   indexPlatform,
+  getAllGenres,
 };

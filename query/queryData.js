@@ -40,6 +40,9 @@ const gamesForPlatform = `SELECT * FROM videogames_store.videogames WHERE platfo
 // QUERY SHOW
 const gamePlatformQuery = `SELECT * FROM videogames_store.videogames WHERE platform = ? AND id = ?`;
 
+// QUERY GENRES
+const allGenresQuery = `SELECT name FROM genres ORDER BY name`;
+
 module.exports = {
   videogamesListQuery,
   videogamesRelated,
@@ -47,4 +50,5 @@ module.exports = {
   gamePlatformQuery,
   videogameGenresQuery,
   videogameQuery,
+  allGenresQuery,
 };
