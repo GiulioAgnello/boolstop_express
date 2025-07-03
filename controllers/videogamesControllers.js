@@ -81,9 +81,10 @@ const show = (req, res) => {
 // controller xbox
 const indexBox = (req, res) => {
   const { sort, minPrice } = req.query;
+  const { platform } = req.params;
   const order = "desc";
 
-  let dataParams = [];
+  let dataParams = [platform];
 
   let sql = gamesForXbox;
 

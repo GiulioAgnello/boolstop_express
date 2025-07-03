@@ -12,7 +12,7 @@ const app = express();
 const port = process.env.APP_PORT;
 const urlHost = process.env.APP_HOST;
 const corsConfig = {
-  origin: "http://localhost",
+  origin: "http://localhost:5173",
 };
 
 // cors middelware

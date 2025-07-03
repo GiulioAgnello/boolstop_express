@@ -83,7 +83,7 @@ where videogames.id = ?`;
 
 // xbox
 const gamesForXbox = `SELECT * FROM videogames_store.videogames
-WHERE platform = "xbox" `;
+WHERE platform = ? `;
 
 //  playstation
 const gamesForPs5 = `SELECT * FROM videogames_store.videogames
