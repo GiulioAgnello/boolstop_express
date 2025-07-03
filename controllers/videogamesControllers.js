@@ -40,8 +40,22 @@ const getAllGenres = (req, res) => {
 };
 
 const index = (req, res) => {
-  const { sort, minPrice, genre, platform, name } = req.query;
-  const order = "desc";
+  const { sort, minPrice, genre, platform, name, direction } = req.query;
+
+  // Mappa dei campi ordinabili
+  const sortableFields = {
+    name: "videogames.name",
+    releaseDate: "release_date",
+    price: "original_price",
+  };
+
+  // Default: nessun ordinamento
+  let orderBy = "";
+  if (sort && sortableFields[sort]) {
+    // Solo asc o desc, default desc
+    const dir = direction && direction.toLowerCase() === "asc" ? "ASC" : "DESC";
+    orderBy = ` ORDER BY ${sortableFields[sort]} ${dir}`;
+  }
 
   let dataParams = [];
   let conditions = [];
@@ -81,10 +95,7 @@ const index = (req, res) => {
   }
 
   sql += " GROUP BY videogames.id";
-
-  if (sort) {
-    sql += ` ORDER BY ${mysql.escapeId(sort)} ${order}`;
-  }
+  sql += orderBy;
 
   connection.query(sql, dataParams, (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
