@@ -1,51 +1,4 @@
-const queryGamesList = `SELECT 
-  videogames.id,
-  videogames.name,
-  videogames.description,
-  DATE(videogames.release_date) AS release_date,
-  videogames.software_house,
-  videogames.original_price,
-  videogames.discount_percentage,
-  videogames.image,
-  videogames.pegi,
-  videogames.rating,
-  videogames.platform,
-  videogames.physical_format,
-  videogames.shipping_cost,
-  GROUP_CONCAT(genres.name ORDER BY genres.name SEPARATOR ', ') AS genres
-FROM videogames_store.videogames
-INNER JOIN genres_videogames
-  ON genres_videogames.videogame_id = videogames.id
-INNER JOIN genres
-  ON genres.id = genres_videogames.genre_id
-GROUP BY videogames.id`;
-
-const queryGame = `SELECT 
-  videogames.id,
-  videogames.name,
-  videogames.description,
-  DATE(videogames.release_date) AS release_date,
-  videogames.software_house,
-  videogames.original_price,
-  videogames.discount_percentage,
-  videogames.image,
-  videogames.pegi,
-  videogames.rating,
-  videogames.platform,
-  videogames.physical_format,
-  videogames.shipping_cost,
-  GROUP_CONCAT(genres.name ORDER BY genres.name SEPARATOR ', ') AS genres
-FROM videogames_store.videogames
-INNER JOIN genre_videogame
-  ON genre_videogame.videogame_id = videogames.id
-INNER JOIN genres
-  ON genres.id = genre_videogame.genre_id
-  WHERE videogames.id = ?
-GROUP BY videogames.id`;
-
-const videogamesListQuery = `SELECT * 
-FROM videogames_store.videogames
-`;
+const videogamesListQuery = `SELECT * FROM videogames_store.videogames`;
 
 const videogamesRelated = `SELECT 
   videogames.id,
@@ -79,54 +32,19 @@ inner join genres
 on genres.id = genre_videogame.genre_id
 where videogames.id = ?`;
 
+const videogameQuery = `SELECT * FROM videogames_store.videogames WHERE id = ?`;
+
 // QUERY INDEX
-
-// xbox
-const gamesForPlatform = `SELECT * FROM videogames_store.videogames
-WHERE platform = ? `;
-
-//  playstation
-const gamesForPs5 = `SELECT * FROM videogames_store.videogames
-WHERE platform = "ps5" `;
-
-//  nintendo
-const gamesForNintendo = `SELECT * FROM videogames_store.videogames
-WHERE platform = "Nintendo"`;
-
-// pc
-const gamesForPc = `SELECT * FROM videogames_store.videogames
-WHERE platform = "pc"`;
+const gamesForPlatform = `SELECT * FROM videogames_store.videogames WHERE platform = ?`;
 
 // QUERY SHOW
-
-//  playstation
-const gamePsQuery = `SELECT * FROM videogames_store.videogames
-WHERE platform = "ps5" AND id = ? `;
-
-// pc
-const gamePcQuery = `SELECT * FROM videogames_store.videogames
-WHERE platform = "pc" AND id = ? `;
-
-// xbox
-const gamePlatformQuery = `SELECT * FROM videogames_store.videogames
-WHERE platform = ? AND id = ? `;
-
-//  nintendo
-const gameNintendoQuery = `SELECT * FROM videogames_store.videogames
-WHERE platform = "nintendo" AND id = ? `;
+const gamePlatformQuery = `SELECT * FROM videogames_store.videogames WHERE platform = ? AND id = ?`;
 
 module.exports = {
-  queryGamesList,
-  queryGame,
-  gamePcQuery,
-  gamePlatformQuery,
   videogamesListQuery,
   videogamesRelated,
   gamesForPlatform,
-  gamesForPs5,
-  gamesForNintendo,
-  gamesForPc,
-  gamePsQuery,
-  gameNintendoQuery,
+  gamePlatformQuery,
   videogameGenresQuery,
+  videogameQuery,
 };
