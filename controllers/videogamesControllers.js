@@ -1,4 +1,5 @@
 const mysql = require("mysql2");
+const db = require('../data/db')
 const connection = require("../data/db");
 const {
   videogamesListQuery,
@@ -196,7 +197,6 @@ const showBySlug = (req, res) => {
     res.json(results [0]);
   });
 };
-
 
 module.exports = {
   index,
