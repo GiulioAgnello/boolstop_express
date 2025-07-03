@@ -74,7 +74,8 @@ const show = (req, res) => {
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "database query failed" });
-    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -119,12 +120,13 @@ const indexBox = (req, res) => {
 
 const showXbox = (req, res) => {
   // date to take a query for videogames
-  const { id } = req.params;
+  const { platform, id } = req.params;
   const sql = gameXboxQuery;
   // query for movie
-  connection.query(sql, [id], (err, gameResults) => {
+  connection.query(sql, [platform, id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -172,7 +174,8 @@ const showPs = (req, res) => {
 
   connection.query(sql, [id], (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (results.length === 0) return res.status(404).json({ error: "Game not found" });
+    if (results.length === 0)
+      return res.status(404).json({ error: "Game not found" });
 
     const game = results[0];
 
@@ -222,7 +225,8 @@ const showNintendo = (req, res) => {
 
   connection.query(sql, [id], (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (results.length === 0) return res.status(404).json({ error: "Game not found" });
+    if (results.length === 0)
+      return res.status(404).json({ error: "Game not found" });
 
     const game = results[0];
 
@@ -277,7 +281,8 @@ const showPc = (req, res) => {
 
       return res.status(500).json({ error: "database query failed" });
     }
-    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;

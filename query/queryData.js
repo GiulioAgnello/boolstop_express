@@ -109,7 +109,7 @@ WHERE platform = "pc" AND id = ? `;
 
 // xbox
 const gameXboxQuery = `SELECT * FROM videogames_store.videogames
-WHERE platform = "xbox" AND id = ? `;
+WHERE platform = ? AND id = ? `;
 
 //  nintendo
 const gameNintendoQuery = `SELECT * FROM videogames_store.videogames
