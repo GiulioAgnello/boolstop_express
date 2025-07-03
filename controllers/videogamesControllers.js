@@ -4,6 +4,7 @@ const {
   videogamesListQuery,
   videogamesRelated,
   queryGame,
+  queryGamesList,
   gamePcQuery,
   gameXboxQuery,
   gamesForXbox,
@@ -35,20 +36,30 @@ const indexRelated = (req, res) => {
 const index = (req, res) => {
   const { sort, minPrice } = req.query;
   const order = "desc";
+  const { name } = req.query;
 
   let dataParams = [];
+  let conditions = [];
 
   let sql = videogamesListQuery;
 
   if (minPrice) {
-    sql += ` WHERE original_price >= ? `;
+    conditions.push("original_price >= ?");
     dataParams.push(minPrice);
   }
 
-  if (sort) {
-    sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  if (name) {
+    conditions.push("videogames.name LIKE ?");
+    dataParams.push(`%${name}%`);
   }
 
+  if (conditions.length > 0) {
+    sql += " WHERE " + conditions.join(" AND ");
+  }
+
+  if (sort) {
+    sql += ` ORDER BY ${mysql.escapeId(sort)} ${order}`;
+  }
   // eseguiamo la query!
   connection.query(sql, dataParams, (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
@@ -63,8 +74,7 @@ const show = (req, res) => {
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "database query failed" });
-    if (gameResults.length === 0)
-      return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -114,8 +124,7 @@ const showXbox = (req, res) => {
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (gameResults.length === 0)
-      return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -163,8 +172,7 @@ const showPs = (req, res) => {
 
   connection.query(sql, [id], (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (results.length === 0)
-      return res.status(404).json({ error: "Game not found" });
+    if (results.length === 0) return res.status(404).json({ error: "Game not found" });
 
     const game = results[0];
 
@@ -214,8 +222,7 @@ const showNintendo = (req, res) => {
 
   connection.query(sql, [id], (err, results) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (results.length === 0)
-      return res.status(404).json({ error: "Game not found" });
+    if (results.length === 0) return res.status(404).json({ error: "Game not found" });
 
     const game = results[0];
 
@@ -270,8 +277,7 @@ const showPc = (req, res) => {
 
       return res.status(500).json({ error: "database query failed" });
     }
-    if (gameResults.length === 0)
-      return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;

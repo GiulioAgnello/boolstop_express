@@ -18,7 +18,7 @@ INNER JOIN genres_videogames
   ON genres_videogames.videogame_id = videogames.id
 INNER JOIN genres
   ON genres.id = genres_videogames.genre_id
-GROUP BY videogames.id;`;
+GROUP BY videogames.id`;
 
 const queryGame = `SELECT 
   videogames.id,
@@ -41,7 +41,7 @@ INNER JOIN genre_videogame
 INNER JOIN genres
   ON genres.id = genre_videogame.genre_id
   WHERE videogames.id = ?
-GROUP BY videogames.id;`;
+GROUP BY videogames.id`;
 
 const videogamesListQuery = `SELECT * 
 FROM videogames_store.videogames
@@ -68,7 +68,7 @@ INNER JOIN genre_videogame
 INNER JOIN genres
   ON genres.id = genre_videogame.genre_id
   WHERE genres.name = ?
-GROUP BY videogames.id;`;
+GROUP BY videogames.id`;
 
 const videogameGenresQuery = `SELECT 
 genres.name
