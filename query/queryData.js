@@ -40,6 +40,12 @@ const gamesForPlatform = `SELECT * FROM videogames_store.videogames WHERE platfo
 // QUERY SHOW
 const gamePlatformQuery = `SELECT * FROM videogames_store.videogames WHERE platform = ? AND id = ?`;
 
+//QUERY ADD ORDER
+
+const insertOrder = `INSERT INTO videogames_store.orders (customer_name, customer_surname, shipping_address, customer_email, discount_code_id, total_price) VALUES (?, ?, ?, ?, ?, ?)`;
+
+const insertVideogameInOrder = `INSERT INTO videogames_store.order_videogame (order_id, videogame_id, amount) VALUES ( ?, ?, ? );`;
+
 module.exports = {
   videogamesListQuery,
   videogamesRelated,
@@ -47,4 +53,6 @@ module.exports = {
   gamePlatformQuery,
   videogameGenresQuery,
   videogameQuery,
+  insertOrder,
+  insertVideogameInOrder,
 };
