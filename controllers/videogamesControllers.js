@@ -179,12 +179,31 @@ const showPlatform = (req, res) => {
   });
 };
 
+const showBySlug = (req, res) => {
+  const { slug } = req.params;
+
+  const sql = 'SELECT * FROM videogames WHERE slug = ?';
+  db.query(sql, [slug], (err, results) => {
+    if (err) {
+      console.error("Errore Database", err);
+      return res.status(500).json({ error: 'Errore del server' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error:' Videogioco non trovato'});
+    }
+
+    res.json(results [0]);
+  });
+};
+
+
 module.exports = {
   index,
   show,
   indexRelated,
-
   showPlatform,
   indexPlatform,
   getAllGenres,
+  showBySlug
 };
