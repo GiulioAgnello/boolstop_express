@@ -82,7 +82,7 @@ where videogames.id = ?`;
 // QUERY INDEX
 
 // xbox
-const gamesForXbox = `SELECT * FROM videogames_store.videogames
+const gamesForPlatform = `SELECT * FROM videogames_store.videogames
 WHERE platform = ? `;
 
 //  playstation
@@ -108,7 +108,7 @@ const gamePcQuery = `SELECT * FROM videogames_store.videogames
 WHERE platform = "pc" AND id = ? `;
 
 // xbox
-const gameXboxQuery = `SELECT * FROM videogames_store.videogames
+const gamePlatformQuery = `SELECT * FROM videogames_store.videogames
 WHERE platform = ? AND id = ? `;
 
 //  nintendo
@@ -119,10 +119,10 @@ module.exports = {
   queryGamesList,
   queryGame,
   gamePcQuery,
-  gameXboxQuery,
+  gamePlatformQuery,
   videogamesListQuery,
   videogamesRelated,
-  gamesForXbox,
+  gamesForPlatform,
   gamesForPs5,
   gamesForNintendo,
   gamesForPc,

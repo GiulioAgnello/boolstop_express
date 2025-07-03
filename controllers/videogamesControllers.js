@@ -6,8 +6,8 @@ const {
   queryGame,
   queryGamesList,
   gamePcQuery,
-  gameXboxQuery,
-  gamesForXbox,
+  gamePlatformQuery,
+  gamesForPlatform,
   gamesForPs5,
   gamesForNintendo,
   gamesForPc,
@@ -89,15 +89,15 @@ const show = (req, res) => {
   });
 };
 
-// controller xbox
-const indexBox = (req, res) => {
+// controller platform
+const indexPlatform = (req, res) => {
   const { sort, minPrice } = req.query;
   const { platform } = req.params;
   const order = "desc";
 
   let dataParams = [platform];
 
-  let sql = gamesForXbox;
+  let sql = gamesForPlatform;
 
   if (minPrice) {
     sql += ` AND original_price >= ? `;
@@ -118,10 +118,10 @@ const indexBox = (req, res) => {
   });
 };
 
-const showXbox = (req, res) => {
+const showPlatform = (req, res) => {
   // date to take a query for videogames
   const { platform, id } = req.params;
-  const sql = gameXboxQuery;
+  const sql = gamePlatformQuery;
   // query for movie
   connection.query(sql, [platform, id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
@@ -301,8 +301,8 @@ module.exports = {
   show,
   indexRelated,
   showPc,
-  showXbox,
-  indexBox,
+  showPlatform,
+  indexPlatform,
   indexPs,
   indexNintendo,
   indexPc,

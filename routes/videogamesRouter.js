@@ -6,10 +6,9 @@ const router = express.Router();
 
 // router
 router.get(`/`, videogamesControllers.index);
-router.get(`/platform/:platform`, videogamesControllers.indexBox);
+router.get(`/platform/:platform`, videogamesControllers.indexPlatform);
 router.get(`/genres/:genres`, videogamesControllers.indexRelated);
-router.get(`/platform/:platform/:id`, videogamesControllers.indexBox);
-
+router.get(`/platform/:platform/:id`, videogamesControllers.showPlatform);
 router.get(`/:id`, videogamesControllers.show);
 // router.get(`/platform/pc`, videogamesControllers.indexPc);
 // router.get(`/platform/pc/:id`, videogamesControllers.showPc);
