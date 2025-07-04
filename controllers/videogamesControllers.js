@@ -13,7 +13,7 @@ const {
 
 function fixerValue(results) {
   results.map((game) => {
-    game.image = "https://localhost:3000/images/videogames/" + game.image;
+    game.image = "http://localhost:3000/img/" + game.image;
     game.original_price = parseFloat(game.original_price);
     game.discount_percentage = parseFloat(game.discount_percentage);
     return results;
@@ -113,12 +113,6 @@ const index = (req, res) => {
       genres: game.genres ? game.genres.split(",") : [],
     }));
 
-    processedResults.map((game) => {
-      game.image = "https://localhost:3000/images/videogames/" + game.image;
-      game.original_price = parseFloat(game.original_price);
-      game.discount_percentage = parseFloat(game.discount_percentage);
-      return game;
-    });
     fixerValue(processedResults);
 
     res.json({ results: processedResults });
