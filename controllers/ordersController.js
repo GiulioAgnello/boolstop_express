@@ -101,6 +101,7 @@ const addOrder = (req, res) => {
           return res.status(500).send({ message: "Database queery failed" });
         }
 
+        const orderId = result.insertId;
         const sqlVgOrder = insertVideogameInOrder;
 
         let counter = 0;
@@ -109,7 +110,7 @@ const addOrder = (req, res) => {
         videogames.forEach((videogame) => {
           connection.query(
             sqlVgOrder,
-            [result.insertId, videogame.videogame_id, videogame.amount],
+            [orderId, videogame.videogame_id, videogame.amount],
             (err, result) => {
               if (isError) return;
               if (err) {
@@ -122,7 +123,7 @@ const addOrder = (req, res) => {
               if (counter === videogames.length)
                 res
                   .status(201)
-                  .json({ message: "Vg added into order", result });
+                  .json({ message: "Vg added into order", orderId });
             }
           );
         });
