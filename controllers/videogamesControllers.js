@@ -126,8 +126,7 @@ const show = (req, res) => {
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "database query failed" });
-    if (gameResults.length === 0)
-      return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -181,8 +180,7 @@ const showPlatform = (req, res) => {
   // query for movie
   connection.query(sql, [platform, id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (gameResults.length === 0)
-      return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -199,7 +197,8 @@ const showPlatform = (req, res) => {
 const showBySlug = (req, res) => {
   const { slug } = req.params;
 
-  const sql = "SELECT * FROM videogames WHERE slug = ?";
+  const sql = `SELECT videogames.*, GROUP_CONCAT(genres.name SEPARATOR ', ') AS genres FROM videogames LEFT JOIN genre_videogame ON genre_videogame.videogame_id = videogames.id
+    LEFT JOIN genres ON genres.id = genre_videogame.genre_id WHERE slug = ?`;
   db.query(sql, [slug], (err, results) => {
     if (err) {
       console.error("Errore Database", err);
