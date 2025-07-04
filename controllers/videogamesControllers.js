@@ -1,17 +1,24 @@
 const mysql = require("mysql2");
-const db = require('../data/db')
+const db = require("../data/db");
 const connection = require("../data/db");
 const {
   videogamesListQuery,
   videogamesRelated,
-
   gamePlatformQuery,
   gamesForPlatform,
-
   videogameGenresQuery,
   videogameQuery,
   allGenresQuery,
 } = require("../query/queryData");
+
+function fixerValue(results) {
+  results.map((game) => {
+    game.image = "https://localhost:3000/images/videogames/" + game.image;
+    game.original_price = parseFloat(game.original_price);
+    game.discount_percentage = parseFloat(game.discount_percentage);
+    return results;
+  });
+}
 
 // Filter genre correlati
 const indexRelated = (req, res) => {
@@ -106,6 +113,14 @@ const index = (req, res) => {
       genres: game.genres ? game.genres.split(",") : [],
     }));
 
+    processedResults.map((game) => {
+      game.image = "https://localhost:3000/images/videogames/" + game.image;
+      game.original_price = parseFloat(game.original_price);
+      game.discount_percentage = parseFloat(game.discount_percentage);
+      return game;
+    });
+    fixerValue(processedResults);
+
     res.json({ results: processedResults });
   });
 };
@@ -117,7 +132,8 @@ const show = (req, res) => {
   // query for movie
   connection.query(sql, [id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "database query failed" });
-    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -125,6 +141,8 @@ const show = (req, res) => {
     connection.query(sqlGenres, [id], (err, results) => {
       if (err) return res.status(500).json({ error: "Database query failed" });
       game.genres = results.map((genre) => genre.name);
+
+      fixerValue(gameResults);
 
       res.json(game);
     });
@@ -156,6 +174,8 @@ const indexPlatform = (req, res) => {
       console.log(err);
       return res.status(500).json({ error: "Database query failed" });
     }
+
+    fixerValue(results);
     res.json({ results });
   });
 };
@@ -167,7 +187,8 @@ const showPlatform = (req, res) => {
   // query for movie
   connection.query(sql, [platform, id], (err, gameResults) => {
     if (err) return res.status(500).json({ error: "Database query failed" });
-    if (gameResults.length === 0) return res.status(404).json({ error: "game not found" });
+    if (gameResults.length === 0)
+      return res.status(404).json({ error: "game not found" });
     const game = gameResults[0];
 
     const sqlGenres = videogameGenresQuery;
@@ -175,6 +196,7 @@ const showPlatform = (req, res) => {
     connection.query(sqlGenres, [id], (err, resutlts) => {
       if (err) return res.status(500).json({ error: "Database query failed" });
       game.genres = resutlts.map((genre) => genre.name);
+      fixerValue(gameResults);
       res.json(game);
     });
   });
@@ -183,18 +205,19 @@ const showPlatform = (req, res) => {
 const showBySlug = (req, res) => {
   const { slug } = req.params;
 
-  const sql = 'SELECT * FROM videogames WHERE slug = ?';
+  const sql = "SELECT * FROM videogames WHERE slug = ?";
   db.query(sql, [slug], (err, results) => {
     if (err) {
       console.error("Errore Database", err);
-      return res.status(500).json({ error: 'Errore del server' });
+      return res.status(500).json({ error: "Errore del server" });
     }
 
     if (results.length === 0) {
-      return res.status(404).json({ error:' Videogioco non trovato'});
+      return res.status(404).json({ error: " Videogioco non trovato" });
     }
 
-    res.json(results [0]);
+    fixerValue(results);
+    res.json(results[0]);
   });
 };
 
@@ -205,5 +228,5 @@ module.exports = {
   showPlatform,
   indexPlatform,
   getAllGenres,
-  showBySlug
+  showBySlug,
 };
