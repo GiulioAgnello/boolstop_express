@@ -11,19 +11,14 @@ const addVideogameToOrder = (req, res) => {
 
   const insertQuery = `INSERT INTO order_videogame (order_id, videogame_id, amount) VALUES (?, ?, ?)`;
 
-  connection.query(
-    insertQuery,
-    [orderId, videogame_id, amount],
-    (err, result) => {
-      if (err)
-        return res.status(500).json({ error: `Database error on insert` });
+  connection.query(insertQuery, [orderId, videogame_id, amount], (err, result) => {
+    if (err) return res.status(500).json({ error: `Database error on insert` });
 
-      res.status(201).json({
-        message: `Videogame added to order`,
-        videogameId: result.insertId,
-      });
-    }
-  );
+    res.status(201).json({
+      message: `Videogame added to order`,
+      videogameId: result.insertId,
+    });
+  });
 };
 
 const addOrder = (req, res) => {
@@ -115,15 +110,11 @@ const addOrder = (req, res) => {
               if (isError) return;
               if (err) {
                 isError = true;
-                return res
-                  .status(500)
-                  .send({ message: "database query failed" });
+                return res.status(500).send({ message: "database query failed" });
               }
               counter++;
               if (counter === videogames.length)
-                res
-                  .status(201)
-                  .json({ message: "Vg added into order", orderId });
+                res.status(201).json({ message: "Vg added into order", orderId });
             }
           );
         });
