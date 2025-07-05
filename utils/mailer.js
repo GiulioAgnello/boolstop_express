@@ -26,5 +26,5 @@ const sendOrderConfirmationEmail = async (toEmail, orderDetails) => {
 }
 
 module.exports = {
-    sendOrderConfirmationEmail,
+    sendOrderConfirmationEmail
 }
