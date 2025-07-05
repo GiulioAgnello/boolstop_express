@@ -197,8 +197,27 @@ const showPlatform = (req, res) => {
 const showBySlug = (req, res) => {
   const { slug } = req.params;
 
-  const sql = `SELECT videogames.*, GROUP_CONCAT(genres.name SEPARATOR ', ') AS genres FROM videogames LEFT JOIN genre_videogame ON genre_videogame.videogame_id = videogames.id
-    LEFT JOIN genres ON genres.id = genre_videogame.genre_id WHERE slug = ?`;
+  const sql = `SELECT 
+    videogames.id,
+    videogames.name,
+    videogames.description,
+    videogames.release_date,
+    videogames.software_house,
+    videogames.original_price,
+    videogames.discount_percentage,
+    videogames.image,
+    videogames.rating,
+    videogames.pegi,
+    videogames.platform,
+    videogames.physical_format,
+    videogames.shipping_cost,
+    videogames.slug,
+    GROUP_CONCAT(genres.name SEPARATOR ', ') AS genres
+  FROM videogames
+  LEFT JOIN genre_videogame ON genre_videogame.videogame_id = videogames.id
+  LEFT JOIN genres ON genres.id = genre_videogame.genre_id
+  WHERE slug = ?
+  GROUP BY videogames.id`;
   db.query(sql, [slug], (err, results) => {
     if (err) {
       console.error("Errore Database", err);
