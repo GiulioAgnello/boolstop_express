@@ -48,6 +48,9 @@ const insertOrder = `INSERT INTO videogames_store.orders (customer_name, custome
 
 const insertVideogameInOrder = `INSERT INTO videogames_store.order_videogame (order_id, videogame_id, amount) VALUES ( ?, ?, ? );`;
 
+const selectDscCode = `SELECT * FROM discount_codes
+where discount_codes.name = ? and curdate() between start_date and end_date`;
+
 module.exports = {
   videogamesListQuery,
   videogamesRelated,
@@ -58,4 +61,5 @@ module.exports = {
   allGenresQuery,
   insertOrder,
   insertVideogameInOrder,
+  selectDscCode,
 };
