@@ -197,21 +197,10 @@ const showPlatform = (req, res) => {
 const showBySlug = (req, res) => {
   const { slug } = req.params;
 
+  console.log("Richiesta slug:", slug);
+
   const sql = `SELECT 
-    videogames.id,
-    videogames.name,
-    videogames.description,
-    videogames.release_date,
-    videogames.software_house,
-    videogames.original_price,
-    videogames.discount_percentage,
-    videogames.image,
-    videogames.rating,
-    videogames.pegi,
-    videogames.platform,
-    videogames.physical_format,
-    videogames.shipping_cost,
-    videogames.slug,
+    videogames.*,
     GROUP_CONCAT(genres.name SEPARATOR ', ') AS genres
   FROM videogames
   LEFT JOIN genre_videogame ON genre_videogame.videogame_id = videogames.id
