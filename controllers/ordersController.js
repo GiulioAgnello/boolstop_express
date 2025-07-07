@@ -31,9 +31,27 @@ const addVideogameToOrder = (req, res) => {
   );
 };
 
+// tramite chiamata API valido il codice sconto inserito lato client
+const validateDscCode = (req, res) => {
+  const { discount_code_name } = req.body;
+
+  sql = selectDscCode;
+
+  connection.query(sql, [discount_code_name], (err, result) => {
+    if (err)
+      return res.status(500).json({ error: `Database error on insert`, err });
+    result.length
+      ? res.json({
+          message: "codice sconto valido",
+          discount_value: parseFloat(result[0].discount_value),
+        })
+      : res.status(400).json({ message: "codice sconto non valido o scaduto" });
+  });
+};
+//-------------------------------------------------------------------
+
 const addOrder = (req, res) => {
   console.log("Invio email a:", req.body.customer_email);
-  console.log("Contenuto carrello:", req.body.cart);
 
   const {
     customer_name,
@@ -82,16 +100,24 @@ const addOrder = (req, res) => {
     });
 
     const sql = insertOrder;
+
     const sqlDscCode = selectDscCode;
 
     if (discount_code_name) {
       connection.query(sqlDscCode, [discount_code_name], (err, result) => {
+        if (!result.length) {
+          return res
+            .status(400)
+            .json({ message: "Codice sconto non valido o scaduto" });
+        }
         if (err)
           return res
             .status(500)
             .json({ message: "Database query failed", err });
 
-        const dscCode = result[0];
+        const discountCode = result[0];
+
+        totalPrice = totalPrice * (1 - discountCode.discount_value / 100);
 
         connection.query(
           sql,
@@ -100,7 +126,7 @@ const addOrder = (req, res) => {
             customer_surname,
             shipping_address,
             customer_email,
-            dscCode.id,
+            discountCode.id,
             totalPrice,
           ],
           (err, result) => {
@@ -226,4 +252,5 @@ const addOrder = (req, res) => {
 module.exports = {
   addOrder,
   addVideogameToOrder,
+  validateDscCode,
 };
