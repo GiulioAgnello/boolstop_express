@@ -44,7 +44,7 @@ const gamePlatformQuery = `SELECT * FROM videogames_store.videogames WHERE platf
 const allGenresQuery = `SELECT name FROM genres ORDER BY name`;
 //QUERY ADD ORDER
 
-const insertOrder = `INSERT INTO videogames_store.orders (customer_name, customer_surname, shipping_address, customer_email, discount_code_id, total_price) VALUES (?, ?, ?, ?, ?, ?)`;
+const insertOrder = `INSERT INTO videogames_store.orders (customer_name, customer_surname, shipping_address, customer_email, discount_code_id, total_price, shipping_cost) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
 const insertVideogameInOrder = `INSERT INTO videogames_store.order_videogame (order_id, videogame_id, amount) VALUES ( ?, ?, ? );`;
 

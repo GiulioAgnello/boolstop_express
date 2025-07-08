@@ -119,6 +119,12 @@ const addOrder = (req, res) => {
 
         totalPrice = totalPrice * (1 - discountCode.discount_value / 100);
 
+        let shipping_cost = 4.99;
+
+        if (totalPrice > 100) {
+          shipping_cost = 0;
+        }
+
         connection.query(
           sql,
           [
@@ -128,6 +134,7 @@ const addOrder = (req, res) => {
             customer_email,
             discountCode.id,
             totalPrice,
+            shipping_cost,
           ],
           (err, result) => {
             if (err) {
@@ -183,6 +190,11 @@ const addOrder = (req, res) => {
         );
       });
     } else {
+      let shipping_cost = 4.99;
+      if (totalPrice > 100) {
+        shipping_cost = 0;
+      }
+
       connection.query(
         sql,
         [
@@ -192,6 +204,7 @@ const addOrder = (req, res) => {
           customer_email,
           null,
           totalPrice,
+          shipping_cost,
         ],
         (err, result) => {
           if (err) {
