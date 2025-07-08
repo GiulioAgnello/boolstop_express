@@ -152,6 +152,12 @@ const indexPlatform = (req, res) => {
   let dataParams = [];
   let conditions = [];
 
+  const sortableFields = {
+    name: "videogames.name",
+    releaseDate: "release_date",
+    price: "original_price",
+  };
+
   let sql = gamesPlatform;
 
   // if (sort) {
