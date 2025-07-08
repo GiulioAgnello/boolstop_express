@@ -9,6 +9,7 @@ const {
   videogameGenresQuery,
   videogameQuery,
   allGenresQuery,
+  gamesPlatform,
 } = require("../query/queryData");
 
 function fixerValue(results) {
@@ -145,22 +146,59 @@ const show = (req, res) => {
 
 // controller platform
 const indexPlatform = (req, res) => {
-  const { sort, minPrice } = req.query;
+  const { sort, minPrice, genre, name, direction } = req.query;
   const { platform } = req.params;
-  const order = "desc";
 
-  let dataParams = [platform];
+  let dataParams = [];
+  let conditions = [];
 
-  let sql = gamesForPlatform;
+  let sql = gamesPlatform;
+
+  // if (sort) {
+  //   sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  // }
+
+  if (platform) {
+    conditions.push("platform = ?");
+    dataParams.push(platform);
+  }
+
+  let orderBy = "";
+  if (sort && sortableFields[sort]) {
+    // Solo asc o desc, default desc
+    const dir = direction && direction.toLowerCase() === "asc" ? "ASC" : "DESC";
+    orderBy = ` ORDER BY ${sortableFields[sort]} ${dir}`;
+  }
 
   if (minPrice) {
-    sql += ` AND original_price >= ? `;
+    conditions.push("original_price >= ?");
     dataParams.push(minPrice);
   }
 
-  if (sort) {
-    sql += ` order by ${mysql.escapeId(sort)} ${order}`;
+  if (name) {
+    conditions.push("videogames.name LIKE ?");
+    dataParams.push(`%${name}%`);
   }
+
+  if (genre) {
+    conditions.push("genres.name = ?");
+    dataParams.push(genre);
+  }
+
+  if (conditions.length > 0) {
+    sql += " WHERE " + conditions.join(" AND ");
+  }
+
+  sql += " GROUP BY videogames.id";
+  sql += orderBy;
+
+  // let orderBy = "";
+  // if (sort && sortableFields[sort]) {
+  //   // Solo asc o desc, default desc
+  //   const dir = direction && direction.toLowerCase() === "asc" ? "ASC" : "DESC";
+  //   orderBy = ` ORDER BY ${sortableFields[sort]} ${dir}`;
+  //   sql += orderBy;
+  // }
 
   // eseguiamo la query!
   connection.query(sql, dataParams, (err, results) => {
