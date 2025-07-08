@@ -121,7 +121,7 @@ const addOrder = (req, res) => {
 
         let shipping_cost = 4.99;
 
-        if (totalPrice > 100) {
+        if (totalPrice >= 100) {
           shipping_cost = 0;
         }
 
