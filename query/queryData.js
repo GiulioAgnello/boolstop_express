@@ -35,7 +35,12 @@ where videogames.id = ?`;
 const videogameQuery = `SELECT * FROM videogames_store.videogames WHERE id = ?`;
 
 // QUERY INDEX
-const gamesForPlatform = `SELECT * FROM videogames_store.videogames WHERE platform = ?`;
+const gamesForPlatform = `SELECT videogames.*, GROUP_CONCAT(genres.name SEPARATOR ', ') AS genres
+FROM videogames
+LEFT JOIN genre_videogame ON genre_videogame.videogame_id = videogames.id
+LEFT JOIN genres ON genres.id = genre_videogame.genre_id
+WHERE platform = ?
+GROUP BY videogames.id`;
 
 // QUERY SHOW
 const gamePlatformQuery = `SELECT * FROM videogames_store.videogames WHERE platform = ? AND id = ?`;
