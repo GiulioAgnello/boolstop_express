@@ -1,4 +1,6 @@
 const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -16,9 +18,7 @@ const sendOrderConfirmationEmail = async (toEmail, orderDetails) => {
     html: `<h2>Grazie per il tuo ordine!</h2>
         <p>Riceverai i tuoi videogiochi al piu presto. Ecco i dettagli:</p>
         <ul>
-            ${orderDetails.items
-              .map((item) => `<li>${item.name} x ${item.amount}</li>`)
-              .join("")}
+            ${orderDetails.items.map((item) => `<li>${item.name} x ${item.amount}</li>`).join("")}
         </ul>
         <p><strong>Totale:</strong> € ${orderDetails.total}</p>`,
   };
