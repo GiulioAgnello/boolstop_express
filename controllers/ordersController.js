@@ -125,6 +125,8 @@ const addOrder = (req, res) => {
           shipping_cost = 0;
         }
 
+        const totalPriceWithShipping = totalPrice + shipping_cost;
+
         connection.query(
           sql,
           [
@@ -133,7 +135,7 @@ const addOrder = (req, res) => {
             shipping_address,
             customer_email,
             discountCode.id,
-            totalPrice,
+            totalPriceWithShipping,
             shipping_cost,
           ],
           (err, result) => {
@@ -172,7 +174,7 @@ const addOrder = (req, res) => {
                         name: `ID_ ${vg.videogame_id}`,
                         amount: vg.amount,
                       })),
-                      total: totalPrice.toFixed(2),
+                      total: totalPriceWithShipping.toFixed(2),
                     };
 
                     sendOrderConfirmationEmail(customer_email, orderDetails)
@@ -191,9 +193,11 @@ const addOrder = (req, res) => {
       });
     } else {
       let shipping_cost = 4.99;
-      if (totalPrice > 100) {
+      if (totalPrice >= 100) {
         shipping_cost = 0;
       }
+
+      const totalPriceWithShipping = totalPrice + shipping_cost;
 
       connection.query(
         sql,
@@ -203,7 +207,7 @@ const addOrder = (req, res) => {
           shipping_address,
           customer_email,
           null,
-          totalPrice,
+          totalPriceWithShipping,
           shipping_cost,
         ],
         (err, result) => {
@@ -242,7 +246,7 @@ const addOrder = (req, res) => {
                       name: `ID_ ${vg.videogame_id}`,
                       amount: vg.amount,
                     })),
-                    total: totalPrice.toFixed(2),
+                    total: totalPriceWithShipping.toFixed(2),
                   };
 
                   sendOrderConfirmationEmail(customer_email, orderDetails)
